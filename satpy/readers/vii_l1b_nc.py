@@ -30,6 +30,8 @@ import numpy as np
 
 from satpy.readers.vii_base_nc import ViiNCBaseFileHandler
 from satpy.readers.vii_utils import C1, C2, MEAN_EARTH_RADIUS
+from satpy.utils import debug_on
+debug_on()
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +47,10 @@ class ViiL1bNCFileHandler(ViiNCBaseFileHandler):
         self._bt_conversion_a = self['data/calibration_data/bt_conversion_a'].values
         self._bt_conversion_b = self['data/calibration_data/bt_conversion_b'].values
         self._channel_cw_thermal = self['data/calibration_data/channel_cw_thermal'].values
-        self._integrated_solar_irradiance = self['data/calibration_data/integrated_solar_irradiance'].values
+        try:
+            self._integrated_solar_irradiance = self['data/calibration_data/integrated_solar_irradiance'].values
+        except KeyError:
+            self._integrated_solar_radiance = self['data/calibration_data/Band_averaged_solar_irradiance'].values
         # Computes the angle factor for reflectance calibration as inverse of cosine of solar zenith angle
         # (the values in the product file are on tie points and in degrees,
         # therefore interpolation and conversion to radians are required)
@@ -69,16 +74,28 @@ class ViiL1bNCFileHandler(ViiNCBaseFileHandler):
         if calibration_name == 'brightness_temperature':
             # Extract the values of calibration coefficients for the current channel
             chan_index = dataset_info['chan_thermal_index']
-            cw = self._channel_cw_thermal[chan_index]
-            a = self._bt_conversion_a[chan_index]
-            b = self._bt_conversion_b[chan_index]
+            cw = dataset_info['wavelength'][1] # self._channel_cw_thermal[chan_index]
+            a = 1 # self._bt_conversion_a[chan_index]
+            b = 0 # self._bt_conversion_b[chan_index]
             # Perform the calibration
             calibrated_variable = self._calibrate_bt(variable, cw, a, b)
             calibrated_variable.attrs = variable.attrs
         elif calibration_name == 'reflectance':
+            scale = 1/(dataset_info['wavelength'][2] - dataset_info['wavelength'][0])
             # Extract the values of calibration coefficients for the current channel
             chan_index = dataset_info['chan_solar_index']
-            isi = self._integrated_solar_irradiance[chan_index]
+            temp_integrated_solar_irradiance = scale * np.array([1.8745136,
+                                                                 1.8551306,
+                                                                 1.5410334,
+                                                                 1.2625,
+                                                                 1.2318035,
+                                                                 0.97186214,
+                                                                 0.86404,
+                                                                 0.47670832,
+                                                                 0.36886302,
+                                                                 0.2422,
+                                                                 0.07040577])
+            isi = temp_integrated_solar_irradiance[chan_index]
             # Perform the calibration
             calibrated_variable = self._calibrate_refl(variable, self.angle_factor, isi)
             calibrated_variable.attrs = variable.attrs
