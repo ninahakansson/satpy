@@ -240,6 +240,11 @@ datasets:
     file_type: nc_nwcsaf_cpp
     coordinates: [lon, lat]
 
+  cpp_dcot:
+    name: cpp_dcot
+    file_type: nc_nwcsaf_cpp
+    coordinates: [lon, lat]
+
   cpp_cot_pal:
     name: cpp_cot_pal
     scale_offset_dataset: cpp_cot
