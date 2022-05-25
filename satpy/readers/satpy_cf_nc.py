@@ -214,7 +214,10 @@ class SatpyCFFileHandler(BaseFileHandler):
     def sensor(self):
         """Get sensor."""
         nc = xr.open_dataset(self.filename, engine=self.engine)
-        return nc.attrs['instrument'].replace('/', '-').lower()
+        if 'instrument' in nc.attrs:
+            return nc.attrs['instrument'].replace('/', '-').lower()
+        else:
+            return "unknown"
 
     @property
     def sensor_names(self):
