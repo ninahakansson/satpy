@@ -38,6 +38,8 @@ from satpy.readers.file_handlers import BaseFileHandler
 from satpy.readers.utils import unzip_file
 from satpy.utils import get_legacy_chunk_size
 
+# Add test message
+
 logger = logging.getLogger(__name__)
 
 CHUNK_SIZE = get_legacy_chunk_size()
