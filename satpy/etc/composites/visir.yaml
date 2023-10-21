@@ -302,6 +302,13 @@ composites:
     - cma
     standard_name: pps_cma
 
+  pps_cbase:
+    compositor: !!python/name:satpy.composites.cloud_products.CloudCompositorCommonMask
+    prerequisites:
+    - nncbase
+    - cma
+    standard_name: pps_cbase
+ 
   pps_ct:
     compositor: !!python/name:satpy.composites.cloud_products.CloudCompositorCommonMask
     prerequisites:

@@ -32,6 +32,10 @@ file_types:
         'W_XX-EUMETSAT-Darmstadt,SING+LEV+SAT,{platform_id}+CTTH_C_EUMS_{start_time:%Y%m%d%H%M%S}_{orbit_number}.nc',
         'W_XX-EUMETSAT-Darmstadt,SING+LEV+SAT,{platform_id}+CTTH_C_EUMS_{start_time:%Y%m%d%H%M%S}_{orbit_number}.nc.bz2']
 
+    nc_nwcsaf_nnextra:
+        file_reader: !!python/name:satpy.readers.nwcsaf_nc.NcNWCSAF
+        file_patterns: ['S_NWC_nnextra_{platform_id}_{orbit_number}_{start_time:%Y%m%dT%H%M%S%f}Z_{end_time:%Y%m%dT%H%M%S%f}Z.nc']
+
     nc_nwcsaf_pc:
         file_reader: !!python/name:satpy.readers.nwcsaf_nc.NcNWCSAF
         file_patterns: ['S_NWC_PC_{platform_id}_{orbit_number}_{start_time:%Y%m%dT%H%M%S%f}Z_{end_time:%Y%m%dT%H%M%S%f}Z.nc']
@@ -241,6 +245,11 @@ datasets:
     name: ctth_tempe_pal
     scale_offset_dataset: ctth_tempe
     file_type: nc_nwcsaf_ctth
+
+  nncbase:
+    name: nncbase
+    file_type: nc_nwcsaf_nnextra
+    coordinates: [lon, lat]
 
 
 # ---- CMIC products (Was CPP in PPS<=2018)------------

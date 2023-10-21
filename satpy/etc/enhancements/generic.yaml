@@ -404,6 +404,35 @@ enhancements:
           - dataset: cma_pal
             color_scale: 255
 
+  pps_cbase:
+    standard_name: pps_cbase
+    operations:
+    - name: colorize
+      method: !!python/name:satpy.enhancements.colorize
+      kwargs:
+        palettes: {
+          values: [0, 679, 680, 720, 760, 800, 840, 880, 920, 960, 990, 991, 1049, 1050, 1200],
+          colors: [
+           [100.0, 100, 100],
+           [150, 150, 150],
+           [255, 247, 236.0],
+           [254, 232, 200],
+           [253, 212, 158],
+           [253, 187, 132],
+           [252, 141, 89],
+           [239, 101, 72],
+           [215, 48, 31],
+           [179, 0, 0],
+           [127, 0, 0],
+           [120, 0.0, 50],
+           [120, 0.0, 50],
+           [0.0, 0.0, 0.0],
+           [0.0, 0.0, 0.0],
+          ],
+          color_scale: 255,
+          min_value: 0,
+          max_value: 1200}
+
   pps_ct:
     standard_name: pps_ct
     operations:

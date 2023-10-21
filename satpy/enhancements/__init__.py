@@ -356,13 +356,15 @@ def _merge_colormaps(kwargs, img=None):
     if isinstance(palette, Colormap):
         full_cmap = palette
     else:
+        full_cmap = create_colormap(palette, img)
+        """
         for itm in palette:
             cmap = create_colormap(itm, img)
             if full_cmap is None:
                 full_cmap = cmap
             else:
                 full_cmap = full_cmap + cmap
-
+        """
     return full_cmap
 
 
@@ -457,12 +459,13 @@ def create_colormap(palette, img=None):
     information.
 
     """
+
     fname = palette.get('filename', None)
     colors = palette.get('colors', None)
     dataset = palette.get("dataset", None)
     # are colors between 0-255 or 0-1
     color_scale = palette.get('color_scale', 255)
-    if fname:
+    if fname is not None:
         if not os.path.exists(fname):
             fname = get_config_path(fname)
         cmap = Colormap.from_file(fname, palette.get("colormap_mode", None), color_scale)

@@ -58,6 +58,7 @@ class CloudCompositorCommonMask(SingleBandCompositor):
         data, cma = projectables
         valid_cma = cma != cma.attrs['_FillValue']
         valid_prod = data != data.attrs['_FillValue']
+        valid_prod = np.logical_and(valid_prod, valid_cma)  # temporary for cloudbase
         valid_prod = np.logical_and(valid_prod, np.logical_not(np.isnan(data)))
         # Update valid_cma and not valid_prod means: keep not valid cma or valid prod
         data = data.where(np.logical_or(np.logical_not(valid_cma), valid_prod),
