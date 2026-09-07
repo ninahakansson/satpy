@@ -379,12 +379,6 @@ class TestMETimageNCBaseFileHandler(unittest.TestCase):
         assert longitude is None
 
 
-# --- bz2 decompression support ---------------------------------------------
-# Written as plain pytest functions (rather than TestMETimageNCBaseFileHandler
-# methods) specifically to use tmp_path fixtures for automatic, cross-platform
-# temp-file cleanup -- fixture injection doesn't work inside unittest.TestCase
-# methods, so these live at module scope instead.
-
 @pytest.fixture
 def metimage_filename_info():
     """Return a filename_info dict valid for the base-class reader."""
