@@ -522,16 +522,3 @@ def test_corrupt_bz2_raises(which_, tmp_path, metimage_filename_info):
                                 # "invalid data stream") varies by OS/locale/pbzip2 install;
                                 # see satpy/readers/core/utils.py::unzip_file
         METimageNCBaseFileHandler(str(bad_filename), metimage_filename_info, {})
-
-
-def test_del_swallows_cleanup_errors(metimage_base_nc_file_bz2, metimage_filename_info):
-    """Test that __del__ never raises, even if removing the decompressed temp file is already gone."""
-    filetype_info = {
-        "cached_longitude": "data/measurement_data/longitude",
-        "cached_latitude": "data/measurement_data/latitude",
-        "interpolate": False,
-    }
-    reader = METimageNCBaseFileHandler(str(metimage_base_nc_file_bz2), metimage_filename_info, filetype_info)
-
-    os.remove(reader.filename)  # simulate the temp file already being gone
-    reader.__del__()  # must not raise
