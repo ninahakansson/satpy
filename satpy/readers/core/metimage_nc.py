@@ -57,6 +57,7 @@ class METimageNCBaseFileHandler(NetCDF4FileHandler):
 
     def __init__(self, filename, filename_info, filetype_info, orthorect=False):
         """Prepare the class for dataset reading."""
+        self._original_filename = filename
         self._unzipped = unzip_file(filename)
         if self._unzipped:
             filename = self._unzipped
@@ -303,7 +304,7 @@ class METimageNCBaseFileHandler(NetCDF4FileHandler):
     def _get_global_attributes(self):
         """Create a dictionary of global attributes to be added to all datasets."""
         attributes = {
-            "filename": self.filename,
+            "filename": self._original_filename,
             "start_time": self.start_time,
             "end_time": self.end_time,
             "spacecraft_name": self.spacecraft_name,
